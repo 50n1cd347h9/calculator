@@ -4,6 +4,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"bufio"
+	"os"
 )
 
 var expr_str string
@@ -11,16 +13,22 @@ var op []string
 var f int = 0
 
 func main() {
+	reader := bufio.NewReader(os.Stdin)
 
 	for true {
 		f = 0
 		expr_str = ""
 
-		fmt.Scan(&expr_str)
+		expr_str, _ = reader.ReadString('\n')
+
+		if (len(expr_str) == 0) {
+			break
+		}
+
 		var re = regexp.MustCompile(`[+\-*\/()]`)
 		expr_str = re.ReplaceAllString(expr_str, " $0 ") // insert space
 		op = strings.Fields(expr_str) // split by whitespace	
-
+	
 		var e = expr()
 		fmt.Println("\t=", e)
 	}
